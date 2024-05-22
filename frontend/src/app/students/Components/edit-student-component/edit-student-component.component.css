@@ -1,0 +1,51 @@
+.img {
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.card-header {
+    background-color: #589869;
+    padding: 1em;
+    border-bottom: 1px solid #dee2e6;
+}
+
+h4 {
+    color: #dee2e6;
+}
+
+button {
+    padding-right: 30px;
+    padding-left: 30px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.close-btn {
+    background-color: #e54141;
+    border-color: #e54141;
+    color: #fff;
+}
+
+
+.close-btn:hover {
+    background-color: #9d2b2b;
+    border-color: #9d2b2b;
+    color: #fff;
+}
+
+.save-btn {
+    background-color: #589869;
+    border-color: #589869;
+    color: #fff;
+}
+
+
+.save-btn:hover {
+    background-color: #0a6c43;
+    border-color: #0a6c43;
+    color: #fff;
+}
+
+
