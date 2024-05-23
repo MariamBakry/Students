@@ -1,0 +1,22 @@
+
+.card-header {
+    background-color: #838684;
+    padding: 1em;
+    margin: auto;
+    border-bottom: 1px solid #dee2e6;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: #dee2e6;
+    font-size: 25px;
+}
+
+button {
+    padding-right: 30px;
+    padding-left: 30px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+

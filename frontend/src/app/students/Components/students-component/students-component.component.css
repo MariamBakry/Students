@@ -43,14 +43,7 @@ body {
     font-weight: normal;
     background: #f8f9fd;
     color: gray; }
-  
 
-  
-.img {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center; }
-  
 .table-wrap {
     overflow-x: scroll; }
   

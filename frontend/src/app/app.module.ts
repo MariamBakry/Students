@@ -11,6 +11,11 @@ import { AddStudentComponentComponent } from './students/Components/add-student-
 import { EditStudentComponentComponent } from './students/Components/edit-student-component/edit-student-component.component';
 import { DeleteStudentComponentComponent } from './students/Components/delete-student-component/delete-student-component.component';
 import { StudentsComponentComponent } from './students/Components/students-component/students-component.component';
+import { AppRoutingModule } from './app-routing.module';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -18,16 +23,25 @@ import { StudentsComponentComponent } from './students/Components/students-compo
     AddStudentComponentComponent,
     EditStudentComponentComponent,
     DeleteStudentComponentComponent,
-    StudentsComponentComponent
+    StudentsComponentComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
     FormsModule,
     NgSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule,
+    FormsModule,
+    // ToastrModule.forRoot({
+    //   closeButton: true,
+    //   progressBar: true,
+    //   progressAnimation: 'increasing'
+    // })
   ],
-  providers: [ConfigService],
+  providers: [ConfigService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
