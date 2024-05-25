@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../Services/auth.service';
 
@@ -10,6 +10,7 @@ import { AuthService } from '../Services/auth.service';
 export class RegisterComponent {
   username: string = '';
   password: string = '';
+  errorMessages: string[] = [];
 
   constructor(private modalService: NgbModal, private authService: AuthService) {}
 
@@ -19,7 +20,11 @@ export class RegisterComponent {
         console.log('User registered successfully:', response);
         this.closeForm()
       }, error => {
-        console.error('Registration error:', error);
+        if (error.error && error.error.message && Array.isArray(error.error.message)) {
+          this.errorMessages = error.error.message;
+        } else {
+          this.errorMessages = ['An error occurred during registration. Please try again.'];
+        }
       });
   }
 

@@ -14,13 +14,14 @@ import { Student } from '../../../models/student.model';
 
 export class StudentsComponentComponent implements OnInit {
   students: any = [];
+  totalStudents: number;
+  p: number = 1;
+  itemsPerPage: number = 10;
+
   constructor(private studentService: StudentService, private modalService: NgbModal) {}
   token = localStorage.getItem('jwtToken');
   ngOnInit() {
     this.getStudents();
-    this.studentService.students$.subscribe(students => {
-      this.students = students;
-    });
   }
 
   loadStudents() {
@@ -32,6 +33,7 @@ export class StudentsComponentComponent implements OnInit {
       this.studentService.getAllStudents(this.token).subscribe(
         data => {
           this.students = data;
+          this.totalStudents = data.length-1;
         },
         error => {
           console.error('Error fetching students:', error);
@@ -69,5 +71,19 @@ export class StudentsComponentComponent implements OnInit {
         this.loadStudents();
       }
     }).catch((error) => {});
+  }
+
+  onPageChange(page: number) {
+    this.p = page;
+    this.getStudents();
+  }
+
+  getPagesArray(): number[] {
+    const totalPages = Math.ceil(this.totalStudents / this.itemsPerPage);
+    return Array(totalPages).fill(0).map((x, i) => i + 1);
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalStudents / this.itemsPerPage);
   }
 }

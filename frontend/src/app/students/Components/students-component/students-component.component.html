@@ -1,11 +1,11 @@
 <head>
-<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-</head>
-
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    </head>
+    
 <body>
     <section class="ftco-section">
         <div class="container">
@@ -31,7 +31,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let student of students" class="alert" role="alert">
+                                <tr *ngFor="let student of students.slice((p - 1) * itemsPerPage, p * itemsPerPage)" class="alert" role="alert">
                                     <td>
                                         <button type="button" class="btn btn-outline-info btn-sm" (click)="editStudentModal(student.id, student)">
                                             <i class="bi bi-pencil"></i>
@@ -40,7 +40,7 @@
                                     <td class="d-flex align-items-center">
                                         <span>{{ student.firstName | titlecase }} {{ student.lastName | titlecase }}</span>
                                     </td>
-                                    <td>{{student.birthDate | age}} years</td>
+                                    <td>{{student.birthDate | age}}</td>
                                     <td>{{student.gender}}</td>
                                     <td>{{student.email}}</td>
                                     <td>{{student.country}}</td>
@@ -51,6 +51,23 @@
                                         </button>
                                     </td>
                                 </tr>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                      <li class="page-item" [class.disabled]="p === 1">
+                                        <a class="page-link" aria-label="Previous" (click)="onPageChange(p - 1)">
+                                          <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                      </li>
+                                      <li class="page-item" *ngFor="let page of getPagesArray(); let i = index">
+                                        <a class="page-link" (click)="onPageChange(i + 1)" [class.active]="p === i + 1">{{ i + 1 }}</a>
+                                      </li>
+                                      <li class="page-item" [class.disabled]="p === totalPages()">
+                                        <a class="page-link" aria-label="Next" (click)="onPageChange(p + 1)">
+                                          <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </nav>
                             </tbody>
                         </table>
                     </div>
@@ -60,4 +77,5 @@
     </section>
 
 </body>
-
+    
+    

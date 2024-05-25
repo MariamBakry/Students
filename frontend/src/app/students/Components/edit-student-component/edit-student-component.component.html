@@ -11,7 +11,10 @@
                     <label class="form-label">First Name</label>
                 </div>
                 <div class="col-9">
-                    <input class="form-control" [(ngModel)]="student.firstName" name="firstName" required>
+                    <input class="form-control" [(ngModel)]="student.firstName" name="firstName" required #firstName="ngModel">
+                    <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="text-danger">
+                        <div *ngIf="firstName.errors.required">First name is required.</div>
+                    </div>
                 </div>
             </div>
             
@@ -21,7 +24,10 @@
                     <label class="form-label">Last Name</label>
                 </div>
                 <div class="col-9">
-                    <input class="form-control" [(ngModel)]="student.lastName"  name="lastName" required>
+                    <input class="form-control" [(ngModel)]="student.lastName"  name="lastName" required #lastName="ngModel">
+                    <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+                        <div *ngIf="lastName.errors.required">First name is required.</div>
+                    </div>
                 </div>
             </div>
 
@@ -30,7 +36,12 @@
                     <label class="form-label">Email</label>
                 </div>
                 <div class="col-9">
-                    <input type="email" class="form-control" name="email" [(ngModel)]="student.email" required>
+                    <input type="email" class="form-control" name="email" [(ngModel)]="student.email" required email pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #email="ngModel"
+                    [ngClass]="{ 'invalid-input': email.invalid && (email.dirty || email.touched) }">
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                        <div *ngIf="email.errors?.required">Email is required.</div>
+                        <div *ngIf="email.errors?.email">Invalid email format.</div>
+                    </div>
                 </div>
             </div>
 
@@ -64,9 +75,10 @@
                             </button>
                         </div>
                     </div>
+                    <small *ngIf="birthDateError" class="text-danger">{{ birthDateError }}</small>
                 </div>
-
             </div>
+            
             <div class="row mb-3">
                 <div class="col-3">
                     <label class="form-label">Country</label>

@@ -22,6 +22,11 @@
                 </div>
                 <div class="col-9">
                     <input class="form-control" type="password" [(ngModel)]="password" name="password" required>
+                    <div *ngIf="errorMessages.length > 0" class="alert alert-danger">
+                        <ul>
+                            <li *ngFor="let errorMessage of errorMessages">{{ errorMessage }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
               

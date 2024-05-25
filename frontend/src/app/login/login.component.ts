@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../Services/auth.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  errorMessage: string = '';
+  loginError:string = '';
 
   constructor(private modalService: NgbModal, private authService: AuthService, private router: Router) {}
 
@@ -24,8 +24,7 @@ export class LoginComponent {
         this.router.navigateByUrl('/students');
         this.closeModal()
       }, error => {
-        console.error('Login error:', error);
-        this.errorMessage = 'Invalid credentials';
+        this.loginError = 'Invalid credentials';
       });
   }
 

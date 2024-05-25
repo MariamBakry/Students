@@ -19,6 +19,8 @@ import { HomeComponent } from './home/home.component';
 
 import { AuthInterceptor } from './auth.interceptor';
 import { AgePipe } from './pipes/age.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PaginationInstance } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -34,12 +36,13 @@ import { AgePipe } from './pipes/age.pipe';
   ],
   imports: [
     BrowserModule,
+    NgxPaginationModule,
     NgbModule,
     FormsModule,
     NgSelectModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [ConfigService, provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

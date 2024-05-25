@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StudentService } from '../../../Services/student.service';
 import { Student } from '../../../models/student.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-add-student-component',
@@ -26,6 +27,9 @@ export class AddStudentComponentComponent {
     'Aswan',
     'Other'
   ];
+  birthDateError:string;
+  requiredInputError:string;
+  formInvalid:boolean;
 
   constructor(private modalService: NgbModal, private studentService:StudentService) {}
 
@@ -34,13 +38,18 @@ export class AddStudentComponentComponent {
   }
 
 
-  addStudent() {
-    if (!this.newStudent.firstName || !this.newStudent.lastName || !this.newStudent.email || !this.newStudent.country || !this.newStudent.gender) {
-      alert('Please fill in all required fields.');
+  addStudent(form: NgForm) {
+    if (form.invalid) {
+      this.formInvalid = true;
+      return;
+    }
+    this.newStudent.birthDate = this.isValidDateObject();
+
+    if (!this.isValidBirthDate(this.newStudent.birthDate)) {
+      this.birthDateError = 'Please enter a valid date.';
       return;
     }
 
-    this.isValidDateObject()
     const token = localStorage.getItem('jwtToken');
     if (token) {
       this.studentService.createStudent(this.newStudent, token).subscribe(() => {
@@ -48,23 +57,28 @@ export class AddStudentComponentComponent {
       },
       error => {
         console.error('Error fetching students:', error);
+      });
+    } else {
+        console.error('No token found');
       }
-    );
-  } else {
-      console.error('No token found');
-    }
   }
 
   isValidDateObject(){
     let birthDate = this.newStudent.birthDate;
     if (birthDate && typeof birthDate === 'object') {
       const { year, month, day } = birthDate as { year: number, month: number, day: number };
-      this.newStudent.birthDate = new Date(year, month - 1, day);
+      return new Date(year, month - 1, day);
     }
   }
 
   updateStudentStatus(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     this.newStudent.status = inputElement.checked ? 'Active' : 'InActive';
+  }
+
+  isValidBirthDate(birthDate: Date): boolean {
+    const currentDate = new Date();
+    const minValidYear = 1920;
+    return birthDate <= currentDate && birthDate.getFullYear() >= minValidYear;
   }
 }

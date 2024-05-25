@@ -42,3 +42,10 @@ button {
 }
 
 
+.invalid-input {
+    border-color: red;
+  }
+  
+  .invalid-input:hover {
+    border-color: red;
+  }

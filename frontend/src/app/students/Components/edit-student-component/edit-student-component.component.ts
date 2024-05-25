@@ -1,4 +1,4 @@
-import { Component , Input } from '@angular/core';
+import { Component , EventEmitter, Input, Output } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Student } from '../../../models/student.model';
 import { StudentService } from '../../../Services/student.service';
@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
 export class EditStudentComponentComponent {
   @Input() id: number;
   @Input() student: Student;
-
   countries = [
     'Cairo',
     'Alexandria',
@@ -21,6 +20,7 @@ export class EditStudentComponentComponent {
     'Aswan',
     'Other'
   ];
+  birthDateError:string;
 
   objectDate: any;
 
@@ -36,7 +36,15 @@ export class EditStudentComponentComponent {
       alert('Please fill in all required fields.');
       return;
     }
-    this.isValidDateObject();
+    if (!this.isValidEmail(this.student.email)) {
+      return;
+    }
+    this.student.birthDate = this.isValidDateObject();
+    if (!this.isValidBirthDate(this.student.birthDate)) {
+      this.birthDateError = 'Please enter a valid date.';
+      return;
+    }
+
     const token = localStorage.getItem('jwtToken');
     if (token) {
       this.studentService.updateStudent(this.id, this.student, token)
@@ -59,7 +67,7 @@ export class EditStudentComponentComponent {
   isValidDateObject(){
     if (this.objectDate && typeof this.objectDate === 'object') {
       const { year, month, day } = this.objectDate as { year: number, month: number, day: number };
-      this.student.birthDate = new Date(year, month - 1, day);
+      return new Date(year, month - 1, day);
     }
   }
 
@@ -83,5 +91,16 @@ export class EditStudentComponentComponent {
     const day = dateObj.getDate();
 
     return { year, month, day }; 
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+  }
+
+  isValidBirthDate(birthDate: Date): boolean {
+    const currentDate = new Date();
+    const minValidYear = 1920;
+    return birthDate <= currentDate && birthDate.getFullYear() >= minValidYear;
   }
 }
