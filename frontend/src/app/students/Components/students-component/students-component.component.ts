@@ -25,7 +25,7 @@ export class StudentsComponentComponent implements OnInit {
   }
 
   loadStudents() {
-    this.studentService.getAllStudents(this.token).subscribe();
+    this.studentService.getAllStudents(this.token);
   }
 
   getStudents(): void {
@@ -47,10 +47,12 @@ export class StudentsComponentComponent implements OnInit {
   addStudentModal() {
     const modalRef = this.modalService.open(AddStudentComponentComponent, { centered: true });
     modalRef.result.then((result) => {
-      if (result === 'saved') {
+      if (result === 'deleted') {
         this.loadStudents();
       }
-    }).catch((error) => {});
+    }).catch((error) => {
+      console.error('Error during deletion modal:', error);
+    });
   }
 
   editStudentModal(id:number, student:Student) {
@@ -66,11 +68,16 @@ export class StudentsComponentComponent implements OnInit {
   deleteStudentModal(id:number) {
     const modalRef = this.modalService.open(DeleteStudentComponentComponent, { centered: true });
     modalRef.componentInstance.id = id;
-    modalRef.componentInstance.onDelete.subscribe((result: boolean) => {
-      if (result) {
-        this.loadStudents();
+    modalRef.componentInstance.onDelete.subscribe({
+      next: (result: boolean) => {
+        if (result) {
+          this.loadStudents();
+        }
+      },
+      error: (error) => {
+        console.error('Error during deletion:', error);
       }
-    }).catch((error) => {});
+    });
   }
 
   onPageChange(page: number) {

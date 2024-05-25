@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StudentService } from '../../../Services/student.service';
 
 @Component({
@@ -10,10 +10,10 @@ import { StudentService } from '../../../Services/student.service';
 export class DeleteStudentComponentComponent {
   @Input() id: number;
   token: string;
-  @Output() onDelete: EventEmitter<boolean> = new EventEmitter<boolean>();
-  constructor(private modalService: NgbModal, private studentService:StudentService) {}
+  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal, private studentService:StudentService) {}
 
   closeModal() {
+    this.activeModal.close('deleted');
     this.modalService.dismissAll();
   }
   deleteStudent(): void {
@@ -21,8 +21,8 @@ export class DeleteStudentComponentComponent {
     if(this.token){
       this.studentService.deleteStudent(this.id, this.token)
       .subscribe(() => {
-          this.closeModal()
-          this.onDelete.emit(true);
+          this.closeModal();
+          this.activeModal.close('deleted');
           console.log('Student deleted successfully');
         },
         error => {

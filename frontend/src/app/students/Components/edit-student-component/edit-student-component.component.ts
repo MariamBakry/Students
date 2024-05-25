@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Student } from '../../../models/student.model';
 import { StudentService } from '../../../Services/student.service';
 import { ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-student-component',
@@ -21,7 +22,7 @@ export class EditStudentComponentComponent {
     'Other'
   ];
   birthDateError:string;
-
+  formInvalid:boolean;
   objectDate: any;
 
   constructor(private modalService: NgbModal, private studentService:StudentService) {}
@@ -31,9 +32,9 @@ export class EditStudentComponentComponent {
     this.dateToCustomObject()
   }
 
-  editStudent() {
-    if (!this.student.firstName || !this.student.lastName || !this.student.email || !this.student.country || !this.student.gender) {
-      alert('Please fill in all required fields.');
+  editStudent(form: NgForm) {
+    if (form.invalid) {
+      this.formInvalid = true;
       return;
     }
     if (!this.isValidEmail(this.student.email)) {
