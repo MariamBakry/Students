@@ -10,7 +10,6 @@ import { AuthService } from '../Services/auth.service';
 export class RegisterComponent {
   username: string = '';
   password: string = '';
-  showForm: boolean = true;
 
   constructor(private modalService: NgbModal, private authService: AuthService) {}
 
@@ -18,7 +17,7 @@ export class RegisterComponent {
     this.authService.register({ username: this.username, password: this.password })
       .subscribe(response => {
         console.log('User registered successfully:', response);
-        this.modalService.dismissAll();
+        this.closeForm()
       }, error => {
         console.error('Registration error:', error);
       });

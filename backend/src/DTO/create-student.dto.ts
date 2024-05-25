@@ -8,7 +8,7 @@ enum Gender {
 
 enum Status{
     ACTIVE = 'Active',
-    INACTIVE = 'Inactive'
+    INACTIVE = 'InActive'
 }
   
 enum Country {

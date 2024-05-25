@@ -10,9 +10,9 @@
     <section class="ftco-section">
         <div class="container">
             <div class="add-new-container">
-                <!-- <button type="button" class="btn btn-success add-new-btn" (click)="addStudent()">
+                <button type="button" class="btn btn-success add-new-btn" (click)="addStudentModal()">
                     <i class="bi bi-plus"></i> Add New
-                </button> -->
+                </button>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -33,23 +33,20 @@
                             <tbody>
                                 <tr *ngFor="let student of students" class="alert" role="alert">
                                     <td>
-                                        <button type="button" class="btn btn-outline-info btn-sm" (click)="updateStudent(student.id)">
+                                        <button type="button" class="btn btn-outline-info btn-sm" (click)="editStudentModal(student.id, student)">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                     </td>
                                     <td class="d-flex align-items-center">
-                                    <div class="pl-3 email">
-                                        <span>{{student.firstName}}</span>
-                                        <span>{{student.lastName}}</span>
-                                    </div>
+                                        <span>{{ student.firstName | titlecase }} {{ student.lastName | titlecase }}</span>
                                     </td>
-                                    <td>{{student.age}}</td>
+                                    <td>{{student.birthDate | age}} years</td>
                                     <td>{{student.gender}}</td>
                                     <td>{{student.email}}</td>
                                     <td>{{student.country}}</td>
-                                    <td class="status"><span class="active">{{student.status}}</span></td>
+                                    <td class="status"><span class="active" [ngClass]="{ 'inactive': student.status === 'InActive' }">{{student.status}}</span></td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteStudent(student.id)">
+                                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteStudentModal(student.id)">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>

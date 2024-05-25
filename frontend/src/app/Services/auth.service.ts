@@ -18,4 +18,18 @@ export class AuthService {
   login(user: { username: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, user);
   }
+
+  //this save a value in the local storage to let the user login until he logout or session get expired
+  setLoggedIn(status: boolean) {
+    localStorage.setItem('isLoggedIn', status ? 'true' : 'false');
+  }
+  
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    return !!token;
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
 }

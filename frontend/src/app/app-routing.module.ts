@@ -4,18 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { StudentsComponentComponent } from './students/Components/students-component/students-component.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { AppComponent } from './app.component';
-import { AuthGuard } from './guards/auth.guard.spec';
+import { HomeComponent } from './home/home.component';
 
 const routes:Routes = [
-  {
+  { 
     path: '',
-    component: AppComponent
+    component: HomeComponent
   },
   {
     path: 'students',
-    component: StudentsComponentComponent,
-    // canActivate: [AuthGuard] 
+    component: StudentsComponentComponent
   },
   {
     path: 'login',

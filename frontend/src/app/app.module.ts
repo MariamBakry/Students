@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ConfigService } from './config.service';
 
 import { AppComponent } from './app.component';
@@ -15,7 +15,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ToastrModule } from 'ngx-toastr';
+import { HomeComponent } from './home/home.component';
+
+import { AuthInterceptor } from './auth.interceptor';
+import { AgePipe } from './pipes/age.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { ToastrModule } from 'ngx-toastr';
     DeleteStudentComponentComponent,
     StudentsComponentComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent,
+    AgePipe
   ],
   imports: [
     BrowserModule,
@@ -35,13 +40,10 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    // ToastrModule.forRoot({
-    //   closeButton: true,
-    //   progressBar: true,
-    //   progressAnimation: 'increasing'
-    // })
   ],
-  providers: [ConfigService, provideAnimationsAsync()],
+  providers: [ConfigService, provideAnimationsAsync(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

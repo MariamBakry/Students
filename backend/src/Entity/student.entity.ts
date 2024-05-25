@@ -18,7 +18,7 @@ export class Students {
   gender: string;
 
   @Column()
-  age: number;
+  birthDate: Date;
 
   @Column()
   country: string;

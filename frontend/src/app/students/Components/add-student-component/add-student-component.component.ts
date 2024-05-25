@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StudentService } from '../../../Services/student.service';
+import { Student } from '../../../models/student.model';
 
 @Component({
   selector: 'app-add-student-component',
@@ -7,43 +9,62 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './add-student-component.component.css'
 })
 export class AddStudentComponentComponent {
-  formData = {
+  newStudent: Student = {
     firstName: '',
     lastName: '',
+    country: '',
+    birthDate: { year: 0, month: 0, day: 0 },
     email: '',
     gender: '',
-    birthDate: null,
-    country: ''
+    status: 'InActive'
   };
-
   countries = [
-    { id: 1, name: 'Cairo' },
-    { id: 2, name: 'Alexandria' },
-    { id: 3, name: 'Giza' },
-    { id: 4, name: 'Sharkia' },
-    { id: 5, name: 'Qalyubia' },
-    { id: 6, name: 'Asyut' },
-    { id: 7, name: 'Suez' },
-    { id: 8, name: 'Luxor' },
-    { id: 9, name: 'Aswan' },
-    { id: 10, name: 'Port Said' }
+    'Cairo',
+    'Alexandria',
+    'Giza',
+    'Luxor',
+    'Aswan',
+    'Other'
   ];
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private studentService:StudentService) {}
 
   closeModal() {
     this.modalService.dismissAll();
   }
 
-  submitForm() {
-    console.log(this.formData);
-    this.closeModal();
+
+  addStudent() {
+    if (!this.newStudent.firstName || !this.newStudent.lastName || !this.newStudent.email || !this.newStudent.country || !this.newStudent.gender) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    this.isValidDateObject()
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      this.studentService.createStudent(this.newStudent, token).subscribe(() => {
+        this.closeModal();
+      },
+      error => {
+        console.error('Error fetching students:', error);
+      }
+    );
+  } else {
+      console.error('No token found');
+    }
   }
 
-  checkboxStatus: string = 'inactive';
+  isValidDateObject(){
+    let birthDate = this.newStudent.birthDate;
+    if (birthDate && typeof birthDate === 'object') {
+      const { year, month, day } = birthDate as { year: number, month: number, day: number };
+      this.newStudent.birthDate = new Date(year, month - 1, day);
+    }
+  }
 
   updateStudentStatus(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    this.checkboxStatus = inputElement.checked ? 'active' : 'inactive';
+    this.newStudent.status = inputElement.checked ? 'Active' : 'InActive';
   }
 }

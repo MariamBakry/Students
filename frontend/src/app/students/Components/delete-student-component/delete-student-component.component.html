@@ -1,1 +1,19 @@
-<p>delete-student-component works!</p>
+<div class="modal-dialog modal-confirm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="icon-box">
+                <i class="material-icons">&#xE5CD;</i>
+            </div>
+        </div>
+        <div class="modal-body">
+            <h4 class="modal-title">Are you sure?</h4><br><br>
+            <p><span>Do you really want to delete</span> <span></span> <span>? This process cannot be undone.</span></p>
+        </div>
+        <form class="card-body" (ngSubmit)="deleteStudent()">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>

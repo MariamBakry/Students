@@ -44,7 +44,7 @@ export class StudentService {
         if(deletedStudent.affected === 0){
             throw new HttpException('Student not found', HttpStatus.BAD_REQUEST);
         }
-        return "User deleted";
+        return deletedStudent; 
     }
 
     async isEmailUnique(email: string): Promise<boolean>{

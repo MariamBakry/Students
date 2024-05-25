@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component , Input } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Student } from '../../../models/student.model';
+import { StudentService } from '../../../Services/student.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-student-component',
@@ -7,43 +10,78 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './edit-student-component.component.css'
 })
 export class EditStudentComponentComponent {
-  formData = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    gender: '',
-    birthDate: null,
-    country: ''
-  };
+  @Input() id: number;
+  @Input() student: Student;
 
   countries = [
-    { id: 1, name: 'Cairo' },
-    { id: 2, name: 'Alexandria' },
-    { id: 3, name: 'Giza' },
-    { id: 4, name: 'Sharkia' },
-    { id: 5, name: 'Qalyubia' },
-    { id: 6, name: 'Asyut' },
-    { id: 7, name: 'Suez' },
-    { id: 8, name: 'Luxor' },
-    { id: 9, name: 'Aswan' },
-    { id: 10, name: 'Port Said' }
+    'Cairo',
+    'Alexandria',
+    'Giza',
+    'Luxor',
+    'Aswan',
+    'Other'
   ];
 
-  constructor(private modalService: NgbModal) {}
+  objectDate: any;
+
+  constructor(private modalService: NgbModal, private studentService:StudentService) {}
+
+  ngOnInit(): void {
+    this.objectDate = this.student.birthDate;
+    this.dateToCustomObject()
+  }
+
+  editStudent() {
+    if (!this.student.firstName || !this.student.lastName || !this.student.email || !this.student.country || !this.student.gender) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    this.isValidDateObject();
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      this.studentService.updateStudent(this.id, this.student, token)
+      .subscribe(response => {
+          this.closeModal();
+        },
+        error => {
+          console.error(error);
+        }
+      );
+    } else {
+      console.error('No token found');
+    }
+  }
 
   closeModal() {
     this.modalService.dismissAll();
   }
 
-  submitForm() {
-    console.log(this.formData);
-    this.closeModal();
+  isValidDateObject(){
+    if (this.objectDate && typeof this.objectDate === 'object') {
+      const { year, month, day } = this.objectDate as { year: number, month: number, day: number };
+      this.student.birthDate = new Date(year, month - 1, day);
+    }
   }
-
-  checkboxStatus: string = 'inactive';
 
   updateStudentStatus(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    this.checkboxStatus = inputElement.checked ? 'active' : 'inactive';
+    this.student.status = inputElement.checked ? 'Active' : 'InActive';
+  }
+
+  dateToCustomObject(): void {
+    console.log(this.student.birthDate)
+    let birthDate = this.student.birthDate;
+    if (typeof birthDate === 'string') {
+      this.objectDate = this.convertDateToObject(birthDate);
+    }
+  }
+
+  convertDateToObject(date: Date): { year: number, month: number, day: number } {
+    const dateObj = new Date(date);
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+
+    return { year, month, day }; 
   }
 }
