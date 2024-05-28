@@ -7,6 +7,20 @@
     </head>
     
 <body>
+    <!-- students.component.html -->
+
+<div class="navbar">
+    <div class="navbar-brand">My App</div>
+    <div class="navbar-menu">
+      <div *ngIf="">
+        <div class="navbar-item">Hi, {{ username }}</div>
+        <button class="navbar-item logout-button" (click)="logout()">Logout</button>
+      </div>
+      <ng-template #loginTemplate>
+        <button class="navbar-item login-button" (click)="login()">Login</button>
+      </ng-template>
+    </div>
+  </div>
     <section class="ftco-section">
         <div class="container">
             <div class="add-new-container">

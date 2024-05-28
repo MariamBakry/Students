@@ -7,7 +7,7 @@ import { UpdateStatement } from 'typeorm';
 import { UpdateStudentDto } from 'src/DTO/update-student.dto';
 
 @Controller('students')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class StudentController {
     constructor(private readonly studentService: StudentService) {}
 
