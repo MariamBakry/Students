@@ -6,6 +6,7 @@ import { EditStudentComponentComponent } from '../edit-student-component/edit-st
 import { DeleteStudentComponentComponent } from '../delete-student-component/delete-student-component.component';
 import { Student } from '../../../models/student.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-students-component',
@@ -19,7 +20,7 @@ export class StudentsComponentComponent implements OnInit {
   p: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private studentService: StudentService, private modalService: NgbModal, private router: Router) {}
+  constructor(private authService: AuthService,private studentService: StudentService, private modalService: NgbModal, private router: Router) {}
   token = localStorage.getItem('jwtToken');
   ngOnInit() {
     if (!this.token) {
@@ -101,5 +102,9 @@ export class StudentsComponentComponent implements OnInit {
 
   totalPages(): number {
     return Math.ceil(this.totalStudents / this.itemsPerPage);
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
