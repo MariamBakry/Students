@@ -21,19 +21,25 @@ export class StudentsComponentComponent implements OnInit {
   constructor(private studentService: StudentService, private modalService: NgbModal) {}
   token = localStorage.getItem('jwtToken');
   ngOnInit() {
-    this.getStudents();
+    if (!this.token) {
+      console.error('No token found');
+    } else {
+      this.getStudents();
+    }
   }
 
   loadStudents() {
-    this.studentService.getAllStudents(this.token);
+    this.getStudents()
   }
 
   getStudents(): void {
     if (this.token) {
       this.studentService.getAllStudents(this.token).subscribe(
         data => {
-          this.students = data;
-          this.totalStudents = data.length-1;
+          if (data) {
+            this.students = data;
+            this.totalStudents = data.length;
+          }
         },
         error => {
           console.error('Error fetching students:', error);
@@ -47,11 +53,11 @@ export class StudentsComponentComponent implements OnInit {
   addStudentModal() {
     const modalRef = this.modalService.open(AddStudentComponentComponent, { centered: true });
     modalRef.result.then((result) => {
-      if (result === 'deleted') {
+      if (result === 'added') {
         this.loadStudents();
       }
     }).catch((error) => {
-      console.error('Error during deletion modal:', error);
+      console.error('Error during adding student modal:', error);
     });
   }
 
@@ -68,15 +74,13 @@ export class StudentsComponentComponent implements OnInit {
   deleteStudentModal(id:number) {
     const modalRef = this.modalService.open(DeleteStudentComponentComponent, { centered: true });
     modalRef.componentInstance.id = id;
-    modalRef.componentInstance.onDelete.subscribe({
-      next: (result: boolean) => {
-        if (result) {
-          this.loadStudents();
-        }
-      },
-      error: (error) => {
-        console.error('Error during deletion:', error);
+    modalRef.result.then((result) => {
+      if (result === 'deleted') {
+        console.log(result)
+        this.loadStudents();
       }
+    }).catch((error) => {
+      console.error('Error during deletion:', error);
     });
   }
 
@@ -88,7 +92,7 @@ export class StudentsComponentComponent implements OnInit {
   getPagesArray(): number[] {
     const totalPages = Math.ceil(this.totalStudents / this.itemsPerPage);
     return Array(totalPages).fill(0).map((x, i) => i + 1);
-  }
+  }  
 
   totalPages(): number {
     return Math.ceil(this.totalStudents / this.itemsPerPage);

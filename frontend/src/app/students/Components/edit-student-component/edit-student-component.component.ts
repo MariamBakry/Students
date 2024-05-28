@@ -37,9 +37,9 @@ export class EditStudentComponentComponent {
       this.formInvalid = true;
       return;
     }
-    if (!this.isValidEmail(this.student.email)) {
-      return;
-    }
+    // if (!this.isValidEmail(this.student.email)) {
+    //   return;
+    // }
     this.student.birthDate = this.isValidDateObject();
     if (!this.isValidBirthDate(this.student.birthDate)) {
       this.birthDateError = 'Please enter a valid date.';
@@ -94,10 +94,10 @@ export class EditStudentComponentComponent {
     return { year, month, day }; 
   }
 
-  isValidEmail(email: string): boolean {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailPattern.test(email);
-  }
+  // isValidEmail(email: string): boolean {
+  //   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  //   return emailPattern.test(email);
+  // }
 
   isValidBirthDate(birthDate: Date): boolean {
     const currentDate = new Date();

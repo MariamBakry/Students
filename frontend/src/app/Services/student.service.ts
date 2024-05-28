@@ -39,10 +39,7 @@ export class StudentService {
     });
     return this.http.post<Student>(this.apiUrl, student, {headers})
     .pipe(
-      tap(newStudent => {
-        const currentStudents = this.studentsSubject.value;
-        this.studentsSubject.next([...currentStudents, newStudent]);
-      })
+      tap(() => this.getAllStudents(token).subscribe())
     );
   }
 
@@ -52,10 +49,7 @@ export class StudentService {
     });
     return this.http.delete<any>(`${this.apiUrl}/${id}`, {headers})
     .pipe(
-        tap(() => {
-          const currentStudents = this.studentsSubject.value;
-          this.studentsSubject.next(currentStudents);
-        })
+      tap(() => this.getAllStudents(token).subscribe())
       );
   }
 

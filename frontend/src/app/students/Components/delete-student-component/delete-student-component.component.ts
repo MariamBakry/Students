@@ -22,7 +22,6 @@ export class DeleteStudentComponentComponent {
       this.studentService.deleteStudent(this.id, this.token)
       .subscribe(() => {
           this.closeModal();
-          this.activeModal.close('deleted');
           console.log('Student deleted successfully');
         },
         error => {

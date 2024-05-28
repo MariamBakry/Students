@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StudentService } from '../../../Services/student.service';
 import { Student } from '../../../models/student.model';
 import { NgForm } from '@angular/forms';
@@ -31,9 +31,10 @@ export class AddStudentComponentComponent {
   requiredInputError:string;
   formInvalid:boolean;
 
-  constructor(private modalService: NgbModal, private studentService:StudentService) {}
+  constructor(private activeModal: NgbActiveModal,private modalService: NgbModal, private studentService:StudentService) {}
 
   closeModal() {
+    this.activeModal.close('added');
     this.modalService.dismissAll();
   }
 
@@ -52,7 +53,7 @@ export class AddStudentComponentComponent {
 
     const token = localStorage.getItem('jwtToken');
     if (token) {
-      this.studentService.createStudent(this.newStudent, token).subscribe(() => {
+        this.studentService.createStudent(this.newStudent, token).subscribe(() => {
         this.closeModal();
       },
       error => {
