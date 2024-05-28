@@ -5,6 +5,7 @@ import { AddStudentComponentComponent } from '../add-student-component/add-stude
 import { EditStudentComponentComponent } from '../edit-student-component/edit-student-component.component';
 import { DeleteStudentComponentComponent } from '../delete-student-component/delete-student-component.component';
 import { Student } from '../../../models/student.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-students-component',
@@ -18,11 +19,12 @@ export class StudentsComponentComponent implements OnInit {
   p: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private studentService: StudentService, private modalService: NgbModal) {}
+  constructor(private studentService: StudentService, private modalService: NgbModal, private router: Router) {}
   token = localStorage.getItem('jwtToken');
   ngOnInit() {
     if (!this.token) {
       console.error('No token found');
+      this.router.navigateByUrl('');
     } else {
       this.getStudents();
     }
@@ -90,8 +92,11 @@ export class StudentsComponentComponent implements OnInit {
   }
 
   getPagesArray(): number[] {
-    const totalPages = Math.ceil(this.totalStudents / this.itemsPerPage);
-    return Array(totalPages).fill(0).map((x, i) => i + 1);
+    const totalPages = this.totalPages();
+    if (totalPages <= 0) {
+      return [];
+    }
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
   }  
 
   totalPages(): number {
