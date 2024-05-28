@@ -20,11 +20,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     PassportModule.register({
       defaultStrategy: 'jwt'
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    AuthModule,
+    })
   ],
   providers: [AuthService,jwtCustomStrategy],
   controllers: [AuthController],

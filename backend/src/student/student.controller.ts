@@ -15,7 +15,7 @@ export class StudentController {
     }
 
     @Get(':id')
-    getOneStudent(@Param('id') id: string){
+    getOneStudent(@Param('id') id: number){
         return this.studentService.getOneStudent(+id);
     }
 
@@ -25,12 +25,12 @@ export class StudentController {
     }
 
     @Put(':id')
-    updateStudent(@Param('id') id: string, @Body() student: Students){
+    updateStudent(@Param('id') id: number, @Body() student: Students){
         return this.studentService.updateStudent(+id, student);
     }
 
     @Delete(':id')
-    removeStudent(@Param('id') id: string){
+    removeStudent(@Param('id') id: number){
         return this.studentService.removeStudent(+id);
     }
 }

@@ -40,4 +40,7 @@ export class CreateStudentDto{
     @IsEnum(Status, { message: 'Status must be either "Active" or "InActive"'})
     status: Status;
 
+    @IsNotEmpty()
+    birthDate: Date;
+
 }
