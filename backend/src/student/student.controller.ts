@@ -3,6 +3,8 @@ import { StudentService } from './student.service';
 import { Students } from '../Entity/student.entity';
 import { CreateStudentDto } from 'src/DTO/create-student.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateStatement } from 'typeorm';
+import { UpdateStudentDto } from 'src/DTO/update-student.dto';
 
 @Controller('students')
 @UseGuards(AuthGuard())
@@ -25,7 +27,7 @@ export class StudentController {
     }
 
     @Put(':id')
-    updateStudent(@Param('id') id: number, @Body() student: Students){
+    updateStudent(@Param('id') id: number, @Body() student: UpdateStudentDto){
         return this.studentService.updateStudent(+id, student);
     }
 

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Students } from '../Entity/student.entity';
 import { CreateStudentDto } from 'src/DTO/create-student.dto';
+import { UpdateStudentDto } from 'src/DTO/update-student.dto';
 
 @Injectable()
 export class StudentService {
@@ -31,7 +32,7 @@ export class StudentService {
         throw new HttpException('this email is already used, choose another one!', HttpStatus.BAD_REQUEST);
     }
 
-    async updateStudent(id: number, student: Students) :Promise<Students>{
+    async updateStudent(id: number, student: UpdateStudentDto) :Promise<Students>{
         const updatedStudent = await this.studentRepository.update(id, student);
         if(updatedStudent.affected === 0){
             throw new HttpException('Student not found', HttpStatus.BAD_REQUEST);
