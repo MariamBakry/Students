@@ -22,6 +22,9 @@ export class LoginComponent {
         localStorage.setItem('jwtToken', response.token);
         this.authService.setLoggedIn(true); 
         this.router.navigateByUrl('/students');
+        
+        const username = this.username;
+        localStorage.setItem('username', username);
         this.closeModal()
       }, error => {
         this.loginError = 'Invalid credentials';

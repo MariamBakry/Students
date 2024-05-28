@@ -19,6 +19,7 @@ export class StudentsComponentComponent implements OnInit {
   totalStudents: number;
   p: number = 1;
   itemsPerPage: number = 10;
+  adminUsername: string;
 
   constructor(private authService: AuthService,private studentService: StudentService, private modalService: NgbModal, private router: Router) {}
   token = localStorage.getItem('jwtToken');
@@ -27,6 +28,7 @@ export class StudentsComponentComponent implements OnInit {
       console.error('No token found');
       this.router.navigateByUrl('');
     } else {
+      this.adminUsername = localStorage.getItem('username');
       this.getStudents();
     }
   }
